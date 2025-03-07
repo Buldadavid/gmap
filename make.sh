@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if != $1;
-poly = "$1"
-
-echo $1
-
 # vygeneruje vrstevnice
 #phyghtmap --polygon=liberec/$poly -o liberec/LIB-SRTM --pbf -j 2 -s 5 -c 200,100 --hgtdir=hgt/ --source=view3 --start-node-id=20000000000 --start-way-id=10000000000 --write-timestamp --max-nodes-per-tile=0
 
