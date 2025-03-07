@@ -1,0 +1,60 @@
+# Not possible to add osmc:symbol directly because of overlapping.
+
+type=route & (route=hiking | route=foot) & osmc:symbol ~ 'red.*' {
+	apply {
+		set mkgmap:red=yes;
+		add redname='${name}';
+	}
+}
+
+type=route & (route=hiking | route=foot) & osmc:symbol ~ 'blue.*' {
+	apply {	
+		set mkgmap:blue=yes;
+		add bluename='${name}';
+	}
+}
+
+type=route & (route=hiking | route=foot) & osmc:symbol ~ 'green.*' & osmc:symbol!=green:white:green_backslash {
+	apply {
+		set mkgmap:green=yes;
+		add greenname='${name}';
+	}
+}
+
+type=route & (route=hiking | route=foot) & osmc:symbol=green:white:green_backslash {
+	apply {
+		set mkgmap:ns=yes;
+		add nsname='${name}';
+	}
+}
+
+type=route & (route=hiking | route=foot) & osmc:symbol ~ 'yellow.*' {
+	apply {
+		set mkgmap:yellow=yes;
+		add yellowname='${name}';
+	}
+}
+
+type=route & (route=hiking | route=foot) & osmc:symbol ~ 'black.*' {
+	apply {
+		set mkgmap:black=yes;
+		add blackname='${name}';
+	}
+}
+
+
+
+
+type=route & (route=bicycle | route=mtb) {
+	apply {
+		set mkgmap:bikeroute=yes;
+		add bikeroutename='${ref}: ${name}' | '${name}' | '${ref}';
+	}
+}
+
+type=route & route=ferry {
+	apply {
+		set route=ferry;
+		add ferryname='${name}';
+	}
+}

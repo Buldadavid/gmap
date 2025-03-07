@@ -1,0 +1,179 @@
+# Routable roads first
+# Used roads: 0x01 - 0x06, 0x08 - 0x13
+#    0x01 motorway
+#    0x02 trunk
+#    0x03 primary road
+#    0x04 secondary road
+#    0x05 tertiary 
+#    0x06 unclassified, motorway-trunk-primary links
+#    0x07 service road, street road 
+#    0x08 footway
+#    0x09 cycleway
+#    0x0a path
+#    0x0b hiking_route
+#    0x0c cycle_route
+#    0x16 track
+#    0x1a steps
+#    0x1b ferry
+
+
+# Hide proposed ways
+( highway=proposed | highway=proposal | highway=planned | highway~'.*proposed.*' ) { delete highway; delete junction }
+
+# Hide proposed railways
+( railway=proposed ) { deletealltags }
+
+# Hide removed ways
+( highway=razed | highway=dismantled ) { deletealltags }
+
+# Hide abandoned ways
+( ( abandoned:highway=* & highway!=* ) | highway=abandoned ) { deletealltags }
+
+# Hide other non-existent ways
+( highway=unbuilt | highway=neverbuilt | highway=rejected | highway~'x-.*' ) { delete highway; delete junction }
+
+
+# Roundabouts
+junction=roundabout & (highway=trunk | highway=trunk_link) [0x0c road_class=4 road_speed=2 resolution 18]
+junction=roundabout & (highway=primary | highway=primary_link) [0x0c road_class=3 road_speed=2 resolution 19]
+junction=roundabout & (highway=secondary | highway=secondary_link) [0x0c road_class=2 road_speed=2 resolution 20]
+junction=roundabout & (highway=tertiary | highway=tertiary_link) [0x0c road_class=1 road_speed=1 resolution 21]
+junction=roundabout & highway=unclassified [0x0c road_class=1 road_speed=1 resolution 21]
+junction=roundabout & highway=* [0x0c road_class=0 road_speed=1 resolution 22] 
+
+# Overways
+bridge=* & bridge!=no & highway!=proposed & bridge!=proposed & railway!=proposed [0x10e0e level 1 continue]
+( tunnel=yes | tunnel=true | tunnel=1 ) & highway!=proposed & railway!=* & waterway!=* [0x2a level 1 continue]
+
+# Tunnel simplification
+tunnel=* & tunnel!=no {add mkgmap:tunnel='yes'}
+
+highway=motorway & mkgmap:tunnel=* [0x2a road_class 4 road_speed 7 level 4]
+highway=trunk & mkgmap:tunnel=* [0x2a road_class 4 road_speed 6 level 4]
+(highway=primary | highway=primary_link) & mkgmap:tunnel=* [0x2a road_class 3 road_speed 5 level 4]
+(highway=secondary | highway=secondary_link) & mkgmap:tunnel=* [0x2a road_class 2 road_speed 4 level 3]
+(highway=tertiary | highway=tertiary_link) & mkgmap:tunnel=* [0x2a road_class 1 road_speed 3 level 3]
+(highway=residential | highway=living_street) & mkgmap:tunnel=* [0x2a road_class 0 road_speed 2 level 2]
+(highway=pedestrian & area!=yes) & mkgmap:tunnel=* [0x2a road_class 0 level 2]
+highway=unclassified & mkgmap:tunnel=* [0x2a road_class 0 level 2]
+highway=trunk_link & mkgmap:tunnel=* [0x2a road_class 1 road_speed 5 level 2]
+highway=motorway_link & mkgmap:tunnel=* [0x2a road_class 1 road_speed 6 level 2]
+(highway=service | highway=track) & mkgmap:tunnel=* [0x2a road_class 0 level 2]
+highway=cycleway & mkgmap:tunnel=* [0x2a road_class 0 level 2]
+(highway=footway | highway=path | highway=bridleway | highway=steps) & mkgmap:tunnel=* [0x2a road_class 0 level 1]
+
+railway=light_rail & mkgmap:tunnel=* [0x2a level 4]
+railway=rail & mkgmap:tunnel=* [0x2a  level 4]
+railway=rail & mkgmap:tunnel=* [0x2a  level 3]
+railway=rail & mkgmap:tunnel=* [0x2a  level 2]
+
+# Barriers
+barrier=hedge [0x10e15 level 1]
+barrier=fence [0x10e13 level 1]
+barrier=wall | wall=* [0x10e14 level 1]
+natural=cliff [0x10e16 level 1]
+
+
+# Hiking trails with "continue" to draw the tracks too
+mkgmap:red=yes    |   osmc:symbol ~ 'red.*'                                                { name '${redname}' }    [0x10e04 level 2 continue]
+mkgmap:blue=yes   |   osmc:symbol ~ 'blue.*'                                               { name '${bluename}' }   [0x10e05 level 2 continue]
+mkgmap:yellow=yes |   osmc:symbol ~ 'yellow.*'                                             { name '${yellowname}' } [0x10e07 level 2 continue]
+mkgmap:black=yes  |   osmc:symbol ~ 'black.*'                                              { name '${blackname}' }  [0x10108 level 2 continue]
+mkgmap:green=yes  | ( osmc:symbol ~ 'green.*' & osmc:symbol!=green:white:green_backslash ) { name '${greenname}' }  [0x10e06 level 2 continue]
+mkgmap:ns=yes                                                                              { name '${nsname}' }     [0x10e0c level 2 continue]
+mkgmap:bikeroute=yes                                                                       { name 'Cyklo ${bikeroutename}' } [0x10e09 level 2 continue]
+
+
+# Borders
+boundary=administrative & admin_level=2 [0x1e level 5]
+boundary=national_park | boundary=protected_area [0x1c level 3]
+
+
+# Railway a transportation
+railway=tram                { name 'Tram ${name}' | 'Tram ${ref}' } [0x10e0d level 2 continue]
+railway=narrow_gauge        { name 'Trat ${name}' | 'Trat ${ref}' } [0x10e0d level 2 continue]
+railway=light_rail          { name 'Trat ${name}' | 'Trat ${ref}' } [0x15 level 4]
+railway=rail & usage=main   { name 'Trat ${name}' | 'Trat ${ref}' } [0x15 level 4]
+railway=rail & usage=branch { name 'Trat ${name}' | 'Trat ${ref}' } [0x15 level 3]
+railway=rail                { name 'Trat ${name}' | 'Trat ${ref}' } [0x15 level 2]
+route=ferry { name '${ferryname}' } [0x1b road_class 0 level 2]
+
+
+# Cycling
+cycleway=lane | ycleway=opposite_lane | cycleway=share_busway [0x10e0a level 2 continue]
+
+
+# Highway
+highway=* & access=no [0x10e10 level 2]
+highway=motorway                             { name '${name}: ${ref}' | '${name}' | '${ref}' } [0x01 road_class 4 road_speed 7 level 5]
+highway=trunk                                { name '${name}: ${ref}' | '${name}' | '${ref}' } [0x02 road_class 4 road_speed 6 level 5]
+highway=primary | highway=primary_link       { name '${name}: ${ref}' | '${name}' | '${ref}' } [0x03 road_class 3 road_speed 5 level 4]
+highway=secondary | highway=secondary_link   { name '${name}: ${ref}' | '${name}' | '${ref}' } [0x04 road_class 2 road_speed 4 level 3]
+highway=tertiary | highway=tertiary_link     { name '${name}: ${ref}' | '${name}' | '${ref}' } [0x05 road_class 1 road_speed 3 level 3]
+highway=residential | highway=living_street  { name '${name}' | 'Ulice'                      } [0x06 road_class 0 road_speed 2 level 2]
+highway=pedestrian & area!=yes               { name '${name}' | 'Pesi ulice'                 } [0x06 road_class 0 level 2]
+highway=service | highway=unclassified       { name '${name}'                                } [0x06 road_class 0 level 2]
+highway=trunk_link                           { name '${name}: ${ref}' | '${name}' | '${ref}' } [0x07 road_class 1 road_speed 5 level 2]
+highway=motorway_link                        { name '${name}: ${ref}' | '${name}' | '${ref}' } [0x07 road_class 1 road_speed 6 level 2]
+
+
+# Tracks
+highway=track & tracktype=grade1              { name '${name}' } [0x0b road_class 0 level 2]
+highway=track & tracktype=grade2              { name '${name}' } [0x0d road_class 0 level 2]
+highway=track & tracktype=grade3              { name '${name}' } [0x0e road_class 0 level 2]
+highway=track & tracktype=grade4              { name '${name}' } [0x0f road_class 0 level 2]
+highway=track & tracktype=grade5              { name '${name}' } [0x10 road_class 0 level 2]
+highway=track | highway=byway | highway=minor { name '${name}' } [0x16 road_class 0 level 2]
+
+
+# No cars
+highway=footway                  { name '${name}' } [0x08 road_class 0 level 1]
+highway=cycleway & foot=no       { name '${name}' } [0x09 road_class 0 level 2]
+highway=path | highway=bridleway { name '${name}' } [0x0a road_class 0 level 1]
+highway=cycleway                 { name '${name}' } [0x11 road_class 0 level 2]
+highway=steps                    { name '${name}' } [0x1a road_class 0 level 1]
+
+
+# Mop up any unrecognised highway types
+highway=* & highway!=abandoned & highway!=disused & highway!=proposed & area!=yes [0x06 road_class 0 level 1]
+
+
+# Lifts of different kinds
+aerialway=cable_car | aerialway=gondola | aerialway~'.*_lift' [0x10e01 level 2]
+aerialway=* [0x10e02 level 1]
+
+
+#Power
+power=line       { name '${voltage} V' } [0x29 level 1]
+power=minor_line { name '${voltage} V' } [0x29 level 1]
+
+
+# Rivers
+waterway=canal { name '${name}' | 'Kanal' } [0x1f level 2]
+waterway=drain { name '${name}' | 'Umely odtok' } [0x1f level 1]
+waterway=fish_pass { name '${name}' | 'Ryby prechod' } [0x1f level 1]
+waterway=river [0x1f level 3]
+waterway=stream [0x18 level 2]
+
+waterway=weir [0x10e17 level 1] 	# Jez
+waterway=dam  [0x10e18 level 1] 	# Hraz
+
+
+# Contour lines
+contour=elevation & contour_ext=elevation_major  { name '${ele|conv:m=>ft}' } [0x22 level 4]
+contour=elevation & contour_ext=elevation_medium { name '${ele|conv:m=>ft}' } [0x21 level 2]
+contour=elevation & contour_ext=elevation_minor  { name '${ele|conv:m=>ft}' } [0x20 level 1]
+
+
+# Natural
+natural=coastline [0x10e00 level 4]
+natural=valley [0x23 level 4]
+natural=arete [0x24 level 4]
+natural=ridge [0x25 level 4]
+man_made=cutline | cutline=* [0x10e12 level 2] 	# Lesni prusek
+
+
+# Final - for compatibility with previous mkgmap.
+<finalize>
+include './inc/compat_lines';
+include './inc/access';
