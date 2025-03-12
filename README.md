@@ -8,4 +8,4 @@ mapy tvoří mkgmap a splitter (https://www.mkgmap.org.uk/) by Steve Ratcliffe
 vrstevnice generuje phyghtmap (http://katze.tfiu.de/projects/phyghtmap) by Panarchos
 
 # to do
-- 
+- přes mosty se vykresluje dálnice
