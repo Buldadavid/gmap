@@ -5,7 +5,8 @@
 building=cathedral [0x10f13 level 0]
 building=church [0x10f14 level 0]
 building=chapel [0x10f15 level 0]
-
+landuse=commercial & building=* [0x14 level 0]
+shop=* & building=* [0x14 level 0]
 
 # Transportation
 aeroway=aerodrome [0x07 level 3]
