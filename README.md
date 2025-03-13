@@ -9,3 +9,4 @@ vrstevnice generuje phyghtmap (http://katze.tfiu.de/projects/phyghtmap) by Panar
 
 # to do
 - přes mosty se vykresluje dálnice
+- přidat cyklostezku + cyklopruh do bloku 23
