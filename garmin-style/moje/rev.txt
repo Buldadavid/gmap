@@ -1591,7 +1591,7 @@ String1=0x12,Klaster
 ExtendedLabels=N
 Xpm="32 32 2 1"
 "! c #FF2D00"
-"# c #FFC640"
+"# c #999999"
 "######!!########################"
 "#####!!!!#######################"
 "#####!!!!#######################"
@@ -1635,7 +1635,7 @@ String1=0x12,Kostel
 ExtendedLabels=N
 Xpm="32 32 2 1"
 "! c #FF3000"
-"# c #FFCA41"
+"# c #999999"
 "#####!!#########################"
 "####!!!!########################"
 "####!!!!########################"
@@ -2060,7 +2060,7 @@ Type=0x09
 UseOrientation=N
 LineWidth=4
 Xpm="0 0 1 0"
-"1 c #FF658B"
+"1 c #FF00FF"
 String1=0x12,Cyklostezka
 ExtendedLabels=N
 [end]
@@ -2171,7 +2171,7 @@ Type=0x11
 UseOrientation=N
 Xpm="32 5 2  1"
 "! c #313131"
-"# c #FF658B"
+"# c #FF00FF"
 "################################"
 "################################"
 "################################"
@@ -2686,17 +2686,12 @@ ExtendedLabels=N
 Type=0x10e09
 ;GRMN_TYPE: Customizable Line Types/CUSTOMIZABLE_LINE_10/Non-routable customizable line/Non NT, NT
 UseOrientation=N
-Xpm="32 22 2  1"
-"! c #FF658B"
+Xpm="32 23 2  1"
+"! c #FF00FF"
 "  c none"
-"                                "
-"                                "
-"                                "
-"                                "
-"!!!!!!  !!!!!!  !!!!!!  !!!!!!  "
-"!!!!!!  !!!!!!  !!!!!!  !!!!!!  "
-"                                "
-"                                "
+"!!!!    !!!!    !!!!    !!!!    "
+"!!!!    !!!!    !!!!    !!!!    "
+"!!!!    !!!!    !!!!    !!!!    "
 "                                "
 "                                "
 "                                "
@@ -2711,7 +2706,12 @@ Xpm="32 22 2  1"
 "                                "
 "                                "
 "                                "
-;12345678901234567890123456789012
+"                                "
+"                                "
+"                                "
+"                                "
+"                                "
+"                                "
 String1=0x12,Cyklotrasa
 ExtendedLabels=Y
 FontStyle=NormalFont
@@ -2725,11 +2725,12 @@ ContourColor=No
 Type=0x10e0a
 ;GRMN_TYPE: Customizable Line Types/CUSTOMIZABLE_LINE_11/Non-routable customizable line/Non NT, NT
 UseOrientation=N
-Xpm="32 8 2  1"
-"! c #FF658B"
+Xpm="32 9 2  1"
+"! c #FF00FF"
 "  c none"
 "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+"                                "
 "                                "
 "                                "
 "                                "
